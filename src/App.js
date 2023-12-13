@@ -5,9 +5,9 @@ import { Outlet } from 'react-router-dom';
 
 function App() {
   return (
-    <div className=''>
+    <div className='relative'>
       <Header />
-      <main className='pt-16'>
+      <main className='pt-20 bg-slate-50 min-h-[calc(100vh)]'>
         <Outlet />
       </main>
     </div>

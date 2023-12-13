@@ -1,24 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import signuplogo from '../asset/login-animation.gif';
 import { BiSolidShow } from 'react-icons/bi';
 import { BiHide } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
 
-const SignUp = () => {
+const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showFocus, setShowFocus] = useState(false);
-  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [showConfirmFocus, setConfirmShowFocus] = useState(false);
   const [data, setData] = useState({
-    firstName: '',
-    lastName: '',
     email: '',
     password: '',
-    confirmPassword: '',
   });
   const [formMsg, setFormMsg] = useState('');
   console.log(data);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     const { firstName, lastName, email, password, confirmPassword } = data;
@@ -39,10 +33,6 @@ const SignUp = () => {
       }, 5000);
     }
   };
-
-  useEffect(() => {
-    setFormMsg(formMsg);
-  }, [formMsg]);
   return (
     <div className='p-3 md:p-4 shadow drop-shadow-md'>
       <div className='w-full max-w-sm bg-white m-auto flex items-center flex-col p-4'>
@@ -60,38 +50,6 @@ const SignUp = () => {
           className='w-full py-3 flex flex-col'
           onSubmit={handleSubmit}
         >
-          <label htmlFor='firstName' className='text-sm'>
-            First Name
-          </label>
-          <input
-            type='text'
-            id='firstName'
-            name='firstName'
-            className='w-full bg-slate-100 p-1 mt-1 mb-3 rounded-md pl-3 pb-2 focus-within:outline-blue-200'
-            value={data.firstName}
-            onChange={(e) => {
-              //This is another way to do it, You can just create a function instead of witing it here
-              const { name, value } = e.target;
-              setData((prev) => {
-                return { ...prev, [name]: value };
-              });
-            }}
-          />
-
-          <label htmlFor='lastName' className='text-sm'>
-            Last Name
-          </label>
-          <input
-            type='text'
-            id='lastName'
-            name='lastName'
-            className='w-full bg-slate-100 p-1 mt-1 mb-3 rounded-md pl-3 pb-2 focus-within:outline-blue-200'
-            value={data.lastName}
-            onChange={(e) => {
-              setData({ ...data, lastName: e.target.value });
-            }}
-          />
-
           <label htmlFor='email' className='text-sm'>
             Email
           </label>
@@ -138,59 +96,27 @@ const SignUp = () => {
             </span>
           </div>
 
-          <label htmlFor='confirmPassword' className='text-sm'>
-            Confirm Pasword
-          </label>
-          <div
-            className={
-              showConfirmFocus
-                ? 'bg-slate-100 flex mt-1 p-1 rounded-md border-blue-300 focus-within:outline focus-within:outline-blue-200 mb-3'
-                : 'bg-slate-100 flex mt-1 p-1 rounded-md focus-within:outline focus-within:outline-blue-200 mb-3'
-            }
-          >
-            <input
-              type={showConfirmPassword ? 'text' : 'password'}
-              id='confirmPassword'
-              name='password'
-              onClick={() => {
-                setConfirmShowFocus(true);
-              }}
-              // hidden={showPassword ? true : false}
-              className=' w-full bg-slate-100 p-0.5 rounded-md pl-3 outline-none'
-              value={data.confirmPassword}
-              onChange={(e) => {
-                setData({ ...data, confirmPassword: e.target.value });
-              }}
-            />
-            <span
-              onClick={() => setShowConfirmPassword((prev) => !prev)}
-              className='mt-1 text-xl'
-            >
-              {showConfirmPassword ? <BiHide /> : <BiSolidShow />}
-            </span>
-          </div>
-
           <button
             type='submit'
             className=' w-full max-w-[120px] m-auto bg-blue-200 mt-3 hover:bg-blue-600 hover:text-white hover:transition-all cursor-pointer rounded-full p-2'
           >
-            Sign up
+            Login
           </button>
         </form>
 
         <p className='mt-3'>
-          Already have account ? click{' '}
+          Don't have account ? click{' '}
           <Link
             to={'/login'}
             className='text-blue-300 active:text-red-500 hover:text-red-500'
           >
             here
           </Link>{' '}
-          to login
+          to signup
         </p>
       </div>
     </div>
   );
 };
 
-export default SignUp;
+export default Login;
