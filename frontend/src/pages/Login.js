@@ -37,11 +37,11 @@ const Login = () => {
 
         console.log(loginFetchRes);
 
-        if (loginFetchRes.alert) {
-          toastFunction('success', loginFetchRes.message);
+        if (loginFetchRes.alert && loginFetchRes.password === data.password) {
+          toastFunction('success', 'Successfully logged in');
           navigate('/');
         } else {
-          toastFunction('error', loginFetchRes.message);
+          toastFunction('error', 'Invalid Login Credentials');
         }
       } else {
         setFormMsg('Please enter a valid email and password credential');
