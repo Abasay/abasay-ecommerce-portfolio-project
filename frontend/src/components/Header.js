@@ -3,9 +3,13 @@ import logo from '../asset/my-logo-10.png';
 import { Link } from 'react-router-dom';
 import { FaUser } from 'react-icons/fa';
 import { BsCartPlusFill } from 'react-icons/bs';
+import { useSelector } from 'react-redux';
 
 const Header = () => {
   const [showDropdown, setShowDropdown] = useState(false);
+  const userData = useSelector((state) => state.user);
+  console.log(userData);
+  const [data, setData] = useState(userData);
 
   return (
     <header className='fixed shadow-md w-full h-20 px-2 md:px-4 z-50 bg-white'>
@@ -35,12 +39,23 @@ const Header = () => {
             </div>
           </div>
 
-          <div className='text-1xl text-slate-600 p-1 rounded-full border-2 border-slate-600 relative'>
-            <FaUser
-              onClick={() => {
-                setShowDropdown((prev) => !prev);
-              }}
-            />
+          <div className='text-1xl text-slate-600 p-1 rounded-full border-2 relative'>
+            {userData.imgUrl ? (
+              <img
+                src={userData.imgUrl}
+                alt='user pic'
+                onClick={() => {
+                  setShowDropdown((prev) => !prev);
+                }}
+                className='w-12 h-12 rounded-full'
+              />
+            ) : (
+              <FaUser
+                onClick={() => {
+                  setShowDropdown((prev) => !prev);
+                }}
+              />
+            )}
             {showDropdown && (
               <div className='absolute right-0 mt-7 bg-white px-2 shadow drop-shadow-md'>
                 <Link to={'newproduct'}>
@@ -49,8 +64,14 @@ const Header = () => {
                   </p>
                 </Link>
 
-                <Link to={'/login'}>
-                  <p className='whitespace-nowrap  p-1'> Login</p>
+                <Link
+                  to={userData.imgUrl ? '/logout' : '/login'}
+                  onClick={() => setShowDropdown(false)}
+                >
+                  <p className='whitespace-nowrap  p-1'>
+                    {' '}
+                    {userData.imgUrl ? 'Logout' : 'Login'}
+                  </p>
                 </Link>
               </div>
             )}

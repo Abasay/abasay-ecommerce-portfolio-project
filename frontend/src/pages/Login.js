@@ -4,10 +4,10 @@ import { BiSolidShow } from 'react-icons/bi';
 import { BiHide } from 'react-icons/bi';
 import { Link, useNavigate } from 'react-router-dom';
 import { toastFunction } from '../utility/toastFunction';
+import { useSelector, useDispatch } from 'react-redux';
+import { loginRedux } from '../redux/userSlice';
 
 const Login = () => {
-  const navigate = useNavigate();
-
   const [showPassword, setShowPassword] = useState(false);
   const [showFocus, setShowFocus] = useState(false);
   const [data, setData] = useState({
@@ -15,6 +15,12 @@ const Login = () => {
     password: '',
   });
   const [formMsg, setFormMsg] = useState('');
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const userData = useSelector((state) => state);
+
   console.log(data);
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -37,22 +43,32 @@ const Login = () => {
 
         console.log(loginFetchRes);
 
-        if (loginFetchRes.alert && loginFetchRes.password === data.password) {
+        if (
+          loginFetchRes.alert &&
+          loginFetchRes.userData.password === data.password
+        ) {
+          dispatch(loginRedux(loginFetchRes));
           toastFunction('success', 'Successfully logged in');
           navigate('/');
         } else {
           toastFunction('error', 'Invalid Login Credentials');
         }
+        console.log(userData);
       } else {
         setFormMsg('Please enter a valid email and password credential');
         setTimeout(() => {
           setFormMsg('');
         }, 5000);
       }
+      console.log(userData);
     } catch (error) {
       console.log(error);
     }
   };
+  console.log(userData);
+  useEffect(() => {
+    console.log(userData);
+  }, [dispatch]);
   return (
     <div className='p-3 md:p-4 shadow drop-shadow-md'>
       <div className='w-full max-w-sm bg-white m-auto flex items-center flex-col p-4'>
