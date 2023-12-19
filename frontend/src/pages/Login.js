@@ -22,6 +22,7 @@ const Login = () => {
   const userData = useSelector((state) => state);
 
   console.log(data);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { email, password } = data;

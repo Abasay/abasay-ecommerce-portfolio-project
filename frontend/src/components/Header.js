@@ -3,13 +3,26 @@ import logo from '../asset/my-logo-10.png';
 import { Link } from 'react-router-dom';
 import { FaUser } from 'react-icons/fa';
 import { BsCartPlusFill } from 'react-icons/bs';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { logOutRedux } from '../redux/userSlice';
+import { toastFunction } from '../utility/toastFunction';
 
 const Header = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const userData = useSelector((state) => state.user);
+
   console.log(userData);
+  console.log(process.env.REACT_APP_ADMIN_EMAIL);
   const [data, setData] = useState(userData);
+
+  const dispatch = useDispatch();
+  const handleLogOut = () => {
+    setShowDropdown(false);
+    dispatch(logOutRedux());
+    toastFunction('success', 'Successfully logged out');
+  };
+
+  const handleLogIn = () => {};
 
   return (
     <header className='fixed shadow-md w-full h-20 px-2 md:px-4 z-50 bg-white'>
@@ -57,18 +70,23 @@ const Header = () => {
               />
             )}
             {showDropdown && (
-              <div className='absolute right-0 mt-7 bg-white px-2 shadow drop-shadow-md'>
-                <Link to={'newproduct'}>
-                  <p className='whitespace-nowrap cursor-pointer p-1'>
-                    New Product
-                  </p>
-                </Link>
+              <div className='absolute right-0 mt-4 bg-white px-2 shadow drop-shadow-md'>
+                {userData.email === process.env.REACT_APP_ADMIN_EMAIL && (
+                  <Link to={'newproduct'}>
+                    <p className='whitespace-nowrap p-1 hover:bg-blue-300 hover:text-white w-full mb-1 rounded-md'>
+                      New Product
+                    </p>
+                  </Link>
+                )}
 
                 <Link
                   to={userData.imgUrl ? '/logout' : '/login'}
-                  onClick={() => setShowDropdown(false)}
+                  onClick={() => {
+                    userData.imgUrl ? handleLogOut() : handleLogIn();
+                    setShowDropdown(false);
+                  }}
                 >
-                  <p className='whitespace-nowrap  p-1'>
+                  <p className='whitespace-nowrap  p-1 hover:bg-blue-300 hover:text-white w-full mb-1 rounded-md'>
                     {' '}
                     {userData.imgUrl ? 'Logout' : 'Login'}
                   </p>
