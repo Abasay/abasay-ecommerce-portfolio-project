@@ -27,6 +27,7 @@ const userSchema = mongoose.Schema({
 });
 
 const userModel = mongoose.model('user', userSchema);
+
 app.get('/', (req, res) => {
   res.send('server is running');
 });
@@ -59,13 +60,68 @@ app.post('/login', async (req, res) => {
   const userSearch = await userModel.findOne({ email: email });
   console.log(userSearch);
   try {
-    if (email === userSearch.email && password === userSearch.password) {
-      res.send({ message: 'Successfully logged in', alert: true });
+    if (userSearch) {
+      const dataToSend = {
+        _id: userSearch._id,
+        firstName: userSearch.firstName,
+        lastName: userSearch.lastName,
+        email: userSearch.email,
+        password: userSearch.password,
+        imgUrl: userSearch.imgUrl,
+      };
+
+      res.send({
+        message: 'User Data found',
+        alert: true,
+        userData: dataToSend,
+      });
     } else {
       res.send({ message: 'Invalid email or password', alert: false });
     }
   } catch (error) {
     console.log(error);
   }
+});
+
+//PRODUCT SECTION
+const productSchema = mongoose.Schema({
+  name: String,
+  category: String,
+  productImg: String,
+  price: String,
+  description: String,
+});
+
+const productModel = mongoose.model('product', productSchema);
+
+//Upload Product API
+app.post('/upload-product', async (req, res) => {
+  console.log(req.body);
+  const prodData = req.body;
+  const assertProduct = await productModel.findOne({ name: prodData.name });
+
+  if (assertProduct) {
+    res.send({
+      status: 201,
+      message: 'product already exist',
+    });
+  } else {
+    try {
+      const data = await productModel(req.body);
+      const save = data.save();
+      res.send({
+        status: 200,
+        message: 'product uploaded successfully',
+      });
+    } catch (error) {
+      //To be handled later
+      console.log('Error uploading product');
+    }
+  }
+});
+
+app.get('/products', async (req, res) => {
+  const allProducts = await productModel.find({}).toArray();
+  res.send({ products: allProducts });
 });
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
