@@ -57,6 +57,7 @@ app.post('/signup', async (req, res) => {
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
   console.log(req.body);
+  console.log(email);
   const userSearch = await userModel.findOne({ email: email });
   console.log(userSearch);
   try {
@@ -121,7 +122,8 @@ app.post('/upload-product', async (req, res) => {
 });
 
 app.get('/products', async (req, res) => {
-  const allProducts = await productModel.find({}).toArray();
+  const allProducts = await productModel.find();
+  console.log(allProducts);
   res.send({ products: allProducts });
 });
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
