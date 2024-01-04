@@ -1,8 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
+import HomeCard from '../components/HomeCard';
+import CardFeature from '../components/CardFeature';
 
 const Home = () => {
   const productData = useSelector((state) => state.products.productList);
+  console.log(productData);
+  const homeProductList = productData.slice(0, 4);
+
+  const homeProductVegetableList = productData.filter(
+    (prod) => prod.category === 'vegetable'
+  );
+  console.log(homeProductVegetableList);
+  const dummyArray = new Array(4).fill(null);
+  const dummyArray1 = new Array(10).fill(null);
 
   return (
     <div className='p-2 md:p-4'>
@@ -31,7 +42,55 @@ const Home = () => {
           </button>
         </div>
 
-        <div className='md:w-1/2 flex flex-wrap gap-5 p-4 justify-center'></div>
+        <div className='md:w-1/2 flex flex-wrap gap-5 p-4 justify-center'>
+          {homeProductList[0]
+            ? homeProductList.map((prod) => {
+                return (
+                  <HomeCard
+                    key={`homeProduct-${prod._id}`}
+                    name={prod.name}
+                    description={prod.description}
+                    productImg={prod.productImg}
+                    category={prod.category}
+                    price={prod.price}
+                  />
+                );
+              })
+            : dummyArray.map((elem, idx) => {
+                return <HomeCard key={idx} isLoading={true} />;
+              })}
+        </div>
+      </div>
+      <div className=''>
+        <div className='flex w-full items-center'>
+          <h2 className='font-bold text-2xl text-slate-800 mb-4'>
+            Fresh Vegetables
+          </h2>
+          <div className=' flex gap-5 overflow-auto scrollbar-none scroll-smooth transition-all'>
+            {homeProductVegetableList[0]
+              ? homeProductVegetableList.map((prod) => {
+                  return (
+                    <CardFeature
+                      key={`vegetable-${prod._id}`}
+                      prod_id={prod._id}
+                      name={prod.name}
+                      description={prod.description}
+                      productImg={prod.productImg}
+                      category={prod.category}
+                      price={prod.price}
+                    />
+                  );
+                })
+              : dummyArray1.map((elem, idx) => {
+                  return (
+                    <CardFeature
+                      key={idx + 'vegetableLoading'}
+                      isLoading={true}
+                    />
+                  );
+                })}
+          </div>
+        </div>
       </div>
     </div>
   );
