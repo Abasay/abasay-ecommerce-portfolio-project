@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import HomeCard from '../components/HomeCard';
 import CardFeature from '../components/CardFeature';
+import { BsArrowLeft, BsArrowRight } from 'react-icons/bs';
 
 const Home = () => {
   const productData = useSelector((state) => state.products.productList);
@@ -15,6 +16,13 @@ const Home = () => {
   const dummyArray = new Array(4).fill(null);
   const dummyArray1 = new Array(10).fill(null);
 
+  const slideRef = useRef();
+  const slideToLeft = () => {
+    slideRef.current.scrollLeft += 200;
+  };
+  const slideToRight = () => {
+    slideRef.current.scrollLeft -= 200;
+  };
   return (
     <div className='p-2 md:p-4'>
       <div className='md:flex gap-4 py-2'>
@@ -66,7 +74,18 @@ const Home = () => {
           <h2 className='font-bold text-2xl text-slate-800 mb-4'>
             Fresh Vegetables
           </h2>
-          <div className=' flex gap-5 overflow-auto scrollbar-none scroll-smooth transition-all'>
+          <div className='mx-6'>
+            <button
+              className='bg-slate-300 hover:bg-slate-400 text-lg p-1 rounded'
+              onClick={slideToLeft}
+            >
+              <BsArrowLeft />
+            </button>
+          </div>
+          <div
+            className=' flex gap-5 overflow-auto scrollbar-none scroll-smooth transition-all'
+            ref={slideRef}
+          >
             {homeProductVegetableList[0]
               ? homeProductVegetableList.map((prod) => {
                   return (
@@ -89,6 +108,14 @@ const Home = () => {
                     />
                   );
                 })}
+          </div>
+          <div className='mx-6'>
+            <button
+              className='bg-slate-300 hover:bg-slate-400 text-lg p-1 rounded'
+              onClick={slideToRight}
+            >
+              <BsArrowRight />
+            </button>
           </div>
         </div>
       </div>
