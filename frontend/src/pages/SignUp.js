@@ -54,6 +54,7 @@ const SignUp = () => {
             );
           } else {
             toastFunction('success', fetchRes.message);
+            localStorage.setItem('user_email', email);
             navigate('/login');
           }
         } catch (error) {

@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import HomeCard from '../components/HomeCard';
 import CardFeature from '../components/CardFeature';
 import { BsArrowLeft, BsArrowRight } from 'react-icons/bs';
+import AllProducts from '../components/AllProducts';
 
 const Home = () => {
   const productData = useSelector((state) => state.products.productList);
@@ -117,6 +118,9 @@ const Home = () => {
               <BsArrowRight />
             </button>
           </div>
+        </div>
+        <div className='mt-10'>
+          <AllProducts />
         </div>
       </div>
     </div>

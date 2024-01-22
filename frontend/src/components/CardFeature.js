@@ -2,6 +2,8 @@ import React from 'react';
 import { addCartItem } from '../redux/productSlice';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { toastFunction } from '../utility/toastFunction';
+import { useSelector } from 'react-redux';
 
 const CardFeature = ({
   name,
@@ -14,6 +16,7 @@ const CardFeature = ({
 }) => {
   //const username = Cookies.get('username')
   const user_email = localStorage.getItem('user_email');
+  const userData = useSelector((state) => state.user);
   const addToCart = async () => {
     const request = await fetch('http:8080/add-to-cart', {
       method: 'POST',
@@ -32,15 +35,19 @@ const CardFeature = ({
   const dispatch = useDispatch();
 
   const handleAddCartProduct = (e) => {
-    dispatch(
-      addCartItem({
-        _id: prod_id,
-        name: name,
-        price: price,
-        category: category,
-        image: productImg,
-      })
-    );
+    if (userData.email && userData.imgUrl) {
+      dispatch(
+        addCartItem({
+          _id: prod_id,
+          name: name,
+          price: price,
+          category: category,
+          image: productImg,
+        })
+      );
+    } else {
+      toastFunction('error', 'Please log in to add items to your cart!!!');
+    }
   };
 
   return (

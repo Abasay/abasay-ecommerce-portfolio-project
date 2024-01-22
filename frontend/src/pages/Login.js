@@ -51,6 +51,7 @@ const Login = () => {
         ) {
           dispatch(loginRedux(loginFetchRes));
           toastFunction('success', 'Successfully logged in');
+          localStorage.setItem('user_email', email);
           navigate('/');
         } else {
           toastFunction('error', 'Invalid Login Credentials');

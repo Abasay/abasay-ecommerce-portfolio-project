@@ -11,6 +11,8 @@ const Cart = () => {
   //   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
 
+  const userData = useSelector((state) => state.user);
+
   const totalPrice = productCartItem.reduce(
     (acc, curr) => acc + parseInt(curr.total),
     0
@@ -19,6 +21,14 @@ const Cart = () => {
     (acc, curr) => acc + parseInt(curr.qty),
     0
   );
+
+  if (!userData.email) {
+    return (
+      <div className='max-w-md mx-auto text-center font-medium italic bg-red-100 my-8 '>
+        You need to sign in to view your cart items.
+      </div>
+    );
+  }
 
   //   const handlePayment = async () => {
   //     if (user.email) {

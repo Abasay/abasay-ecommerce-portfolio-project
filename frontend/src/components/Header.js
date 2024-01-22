@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import logo from '../asset/my-logo-10.png';
 import { Link } from 'react-router-dom';
 import { FaUser } from 'react-icons/fa';
@@ -6,10 +6,16 @@ import { BsCartPlusFill } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { logOutRedux } from '../redux/userSlice';
 import { toastFunction } from '../utility/toastFunction';
+import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
+  const productCartItem = useSelector((state) => state.products.cartItem);
+
   const [showDropdown, setShowDropdown] = useState(false);
   const userData = useSelector((state) => state.user);
+  const [cartQuantity, setCartQuantity] = useState(0);
+
+  const navigate = useNavigate();
 
   console.log(userData);
   console.log(process.env.REACT_APP_ADMIN_EMAIL);
@@ -19,11 +25,15 @@ const Header = () => {
   const handleLogOut = () => {
     setShowDropdown(false);
     dispatch(logOutRedux());
+    navigate('/');
     toastFunction('success', 'Successfully logged out');
   };
 
   const handleLogIn = () => {};
 
+  useEffect(() => {
+    setCartQuantity(productCartItem.length);
+  }, [productCartItem]);
   return (
     <header className='fixed shadow-md w-full h-20 px-2 md:px-4 z-50 bg-white'>
       {/* desktop */}
@@ -36,21 +46,42 @@ const Header = () => {
 
         <div className='flex items-center gap-4 md:gap-7'>
           <nav className='flex gap-4 md:gap-6 text-base md:text-lg'>
-            <Link to={'/'}>Home</Link>
-            <Link to={'menu'}>Menu</Link>
-            <Link to={'about'}>About</Link>
-            <Link to={'contact'}>Contact</Link>
-          </nav>
-
-          <div className='text-2xl text-slate-600 relative'>
-            <BsCartPlusFill className='bg-transparent' />
-            <div
-              className='absolute -top-2 text-sm -right-1 text-white h-4
-            text-center w-4 bg-blue-600 rounded-full m-0 p-0'
+            <Link
+              to={'/'}
+              className='hover:bg-blue-300 hover:text-white p-1 transition-all rounded-lg'
             >
-              0
+              Home
+            </Link>
+            {/* <Link
+              to={'cart'}
+              className='hover:bg-blue-300 hover:text-white p-1 transition-all rounded-lg'
+            >
+              Cart
+            </Link> */}
+            <Link
+              to={'about'}
+              className='hover:bg-blue-300 hover:text-white p-1 transition-all rounded-lg'
+            >
+              About
+            </Link>
+            <Link
+              to={'contact'}
+              className='hover:bg-blue-300 hover:text-white p-1 transition-all rounded-lg'
+            >
+              Contact
+            </Link>
+          </nav>
+          <Link to={'/cart'}>
+            <div className='text-2xl text-slate-600 relative'>
+              <BsCartPlusFill className='bg-transparent' />
+              <div
+                className='absolute -top-2 text-sm -right-1 text-white h-4
+            text-center w-4 bg-blue-600 rounded-full m-0 p-0'
+              >
+                {userData.email ? cartQuantity : 0}
+              </div>
             </div>
-          </div>
+          </Link>
 
           <div className='text-1xl text-slate-600 p-1 rounded-full border-2 relative'>
             {userData.imgUrl ? (
@@ -80,7 +111,7 @@ const Header = () => {
                 )}
 
                 <Link
-                  to={userData.imgUrl ? '/logout' : '/login'}
+                  to={userData.imgUrl ? '' : '/login'}
                   onClick={() => {
                     userData.imgUrl ? handleLogOut() : handleLogIn();
                     setShowDropdown(false);
