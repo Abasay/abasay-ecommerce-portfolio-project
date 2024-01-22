@@ -2,12 +2,17 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv').config();
+const { v2: cloudinary } = require('cloudinary');
+const { v4: uuidv4 } = require('uuid');
+const userModel = require('./models/userModel');
+const productModel = require('./models/productModel');
 
 const app = express();
 app.use(cors());
 app.use(express.json({ limit: '10mb' }));
 
 const PORT = process.env.PORT || 8080;
+
 //mongodb connecion
 // console.log(process.env.MONGODB_URL);
 mongoose.set('strictQuery', false);
@@ -16,20 +21,15 @@ mongoose
   .then(() => console.log('connected to the database'))
   .catch((err) => console.log(err));
 
-//schemas
-const userSchema = mongoose.Schema({
-  firstName: String,
-  lastName: String,
-  email: { type: String, unique: true },
-  password: String,
-  confirmPassword: String,
-  imgUrl: String,
-});
-
-const userModel = mongoose.model('user', userSchema);
-
 app.get('/', (req, res) => {
   res.send('server is running');
+});
+
+//Cloudinary connection
+cloudinary.config({
+  cloud_name: 'dsx79mhvl',
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET_KEY,
 });
 
 //SignUp API
@@ -42,11 +42,15 @@ app.post('/signup', async (req, res) => {
 
     if (userSearch) {
       console.log(userSearch);
-      res.send({ message: 'Email already in use', alert: false });
+      return res.send({ message: 'Email already in use', alert: false });
     } else {
-      const data = userModel(req.body);
+      const userCloudinaryImg = await cloudinary.uploader.upload(
+        req.body.imgUrl,
+        { public_id: 'user' + uuidv4() }
+      );
+      const data = userModel({ ...req.body, imgUrl: userCloudinaryImg.url });
       const save = data.save();
-      res.send({ message: 'Successfully signed up', alert: true });
+      return res.send({ message: 'Successfully signed up', alert: true });
     }
   } catch (error) {
     res.send({ message: 'Failed to signup' });
@@ -85,20 +89,15 @@ app.post('/login', async (req, res) => {
 });
 
 //PRODUCT SECTION
-const productSchema = mongoose.Schema({
-  name: String,
-  category: String,
-  productImg: String,
-  price: String,
-  description: String,
-});
-
-const productModel = mongoose.model('product', productSchema);
 
 //Upload Product API
+//cloudinary.uploader.upload(body.image, {
+//   public_id: 'profile pic',
+// });
 app.post('/upload-product', async (req, res) => {
   console.log(req.body);
   const prodData = req.body;
+
   const assertProduct = await productModel.findOne({ name: prodData.name });
 
   if (assertProduct) {
@@ -108,7 +107,14 @@ app.post('/upload-product', async (req, res) => {
     });
   } else {
     try {
-      const data = await productModel(req.body);
+      const cloudinaryImage = await cloudinary.uploader.upload(
+        prodData.productImg,
+        { public_id: 'prod' + uuidv4() }
+      );
+      const data = await productModel({
+        ...prodData,
+        productImg: cloudinaryImage.url,
+      });
       const save = data.save();
       res.send({
         status: 200,
@@ -116,6 +122,7 @@ app.post('/upload-product', async (req, res) => {
       });
     } catch (error) {
       //To be handled later
+      console.log(error);
       console.log('Error uploading product');
     }
   }
