@@ -29,7 +29,7 @@ function App() {
         console.log(error);
       }
     })();
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     (async () => {
@@ -53,7 +53,7 @@ function App() {
         console.log(error);
       }
     })();
-  }, [email]);
+  }, [email, dispatch]);
 
   return (
     <div className='relative'>

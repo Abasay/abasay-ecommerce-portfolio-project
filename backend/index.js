@@ -9,6 +9,7 @@ const productModel = require('./models/productModel');
 const Cart = require('./models/cartModel');
 const nodemailer = require('nodemailer');
 const mailHandler = require('./handlers/mailHandler');
+const signupMailHandler = require('./handlers/signUpMailHandler');
 
 const app = express();
 app.use(cors());
@@ -38,7 +39,7 @@ cloudinary.config({
 //SignUp API
 app.post('/signup', async (req, res) => {
   console.log(req.body);
-  const { email } = req.body;
+  const { email, firstName, lastName } = req.body;
 
   try {
     const userSearch = await userModel.findOne({ email: email });
@@ -53,7 +54,14 @@ app.post('/signup', async (req, res) => {
       );
       const data = userModel({ ...req.body, imgUrl: userCloudinaryImg.url });
       const save = data.save();
-      return res.send({ message: 'Successfully signed up', alert: true });
+      const signUpMail = await signupMailHandler(email, firstName, lastName);
+      if (signUpMail.response) {
+        return res.send({ message: 'Successfully signed up', alert: true });
+      }
+      return res.send({
+        message: 'Error Signing up, please try again',
+        alert: false,
+      });
     }
   } catch (error) {
     res.send({ message: 'Failed to signup' });
@@ -63,11 +71,9 @@ app.post('/signup', async (req, res) => {
 //Login API
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
-  console.log(req.body);
-  console.log(email);
-  const userSearch = await userModel.findOne({ email: email });
-  console.log(userSearch);
+
   try {
+    const userSearch = await userModel.findOne({ email: email });
     if (userSearch) {
       const dataToSend = {
         _id: userSearch._id,
@@ -132,9 +138,13 @@ app.post('/upload-product', async (req, res) => {
 });
 
 app.get('/products', async (req, res) => {
-  const allProducts = await productModel.find();
-  console.log(allProducts);
-  res.send({ products: allProducts });
+  try {
+    const allProducts = await productModel.find();
+    console.log(allProducts);
+    res.send({ products: allProducts });
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 //User Cart API

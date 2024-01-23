@@ -95,7 +95,7 @@ const CardFeature = ({
           </div>
         </Link>
       ) : (
-        <div>Loading...</div>
+        <div className='font-medium text-gray-500'>Loading...</div>
       )}
     </>
   );

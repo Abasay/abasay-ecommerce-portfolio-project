@@ -17,10 +17,20 @@ code {
 }
 
 input[type='text']::placeholder,
+input[type='search']::placeholder,
 input[type='email']::placeholder,
 input[type='number']::placeholder,
 textarea::placeholder {
   @apply italic font-medium;
+}
+select:focus {
+  @apply rounded-full;
+}
+option {
+  @apply italic font-medium;
+}
+option:focus {
+  @apply border border-2 rounded-full;
 }
 
 input[type='text']:disabled,

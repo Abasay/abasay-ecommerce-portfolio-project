@@ -6,6 +6,7 @@ import { FaLinkedin } from 'react-icons/fa';
 import { SiGmail } from 'react-icons/si';
 import { toastFunction } from '../utility/toastFunction';
 import { RingLoader } from 'react-spinners';
+import { FaChevronDown } from 'react-icons/fa';
 
 const Contact = () => {
   const [details, setDetails] = useState({
@@ -70,8 +71,8 @@ const Contact = () => {
   return (
     <>
       {isSending && (
-        <div className='text-center justify-center mx-auto max-w-md flex flex-row items-center bg-blue-50 my-10 rounded-full px-12 py-2'>
-          <RingLoader size={40} color='blue' />
+        <div className='text-center justify-center mx-auto max-w-md flex flex-row items-center bg-gray-100 my-10 rounded-full px-12 py-2'>
+          <RingLoader size={40} color='lightblue' />
           <p className='text-2xl font-medium text-gray-500 pl-3 '>
             Sending your message.
           </p>
@@ -81,7 +82,7 @@ const Contact = () => {
       <section className=' p-3 grid grid-cols-2 gap-4 max-w-[900px] mx-auto mt-10 contact'>
         <div>
           <div className='flex flex-col'>
-            <h1 className='font-semibold text-3xl italic text-blue-500'>
+            <h1 className='font-bold text-3xl italic text-slate-500'>
               Contact Us!
             </h1>
             <div
@@ -143,26 +144,42 @@ const Contact = () => {
                 className='w-full font-semibold text-xl text-white  bg-blue-600 transition-all p-1 rounded-full pl-3 pb-2 my-8 hover:bg-blue-50 hover:text-blue-600 hover:border hover:border-blue-400 '
               />
             </form>
-
+            <div className='flex flex-row items-center w-20 mx-auto gap-3'>
+              <span className='text-2xl font-medium text-blue-400'>OR</span>
+              <FaChevronDown size={35} className='text-blue-400 mt-2' />
+            </div>
             <div className='mt-8 w-full justify-center flex flex-row gap-6 mx-auto items-center'>
               <div>
-                <a href='https://www.github.com/Abasay'>
-                  <FaGithub size={35} color='' />
+                <a
+                  href='https://www.github.com/Abasay'
+                  className='flex flex-row items-center gap-3'
+                >
+                  <FaGithub size={25} color='#4078c0' />{' '}
+                  <span className='font-medium text-gray-500 underline italic '>
+                    Github
+                  </span>
                 </a>
               </div>
               <div>
-                <a href='https://www.linkedin.com/in/asheem-abdulsalam-133782153'>
-                  <FaLinkedin size={35} />
+                <a
+                  href='https://www.linkedin.com/in/asheem-abdulsalam-133782153'
+                  className='flex flex-row items-center gap-3'
+                >
+                  <FaLinkedin size={25} color='#0072B1' />
+                  <span className='font-medium text-gray-500 underline italic '>
+                    LinkedIn
+                  </span>
                 </a>
               </div>
               <div>
-                <a href='https://wa.me/+2348064611398'>
-                  <FaWhatsapp size={35} />
-                </a>
-              </div>
-              <div>
-                <a href='mailto:abdulsalamasheeem@gmail.com'>
-                  <SiGmail size={35} />
+                <a
+                  href='https://wa.me/+2348064611398'
+                  className='flex flex-row items-center gap-3'
+                >
+                  <FaWhatsapp size={25} color='#075E54' />
+                  <span className='font-medium text-gray-500 underline italic '>
+                    Whatsapp
+                  </span>
                 </a>
               </div>
             </div>

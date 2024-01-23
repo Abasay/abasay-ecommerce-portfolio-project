@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toastFunction } from '../utility/toastFunction';
 import { useSelector, useDispatch } from 'react-redux';
 import { loginRedux } from '../redux/userSlice';
+import { RingLoader } from 'react-spinners';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -15,6 +16,7 @@ const Login = () => {
     password: '',
   });
   const [formMsg, setFormMsg] = useState('');
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -27,6 +29,7 @@ const Login = () => {
 
     try {
       if (email && password) {
+        setIsLoggingIn(true);
         const fetchLoginData = await fetch(
           `${process.env.REACT_APP_SERVER_URL}/login`,
           {
@@ -39,7 +42,7 @@ const Login = () => {
         );
 
         const loginFetchRes = await fetchLoginData.json();
-
+        setIsLoggingIn(false);
         if (
           loginFetchRes.alert &&
           loginFetchRes.userData.password === data.password
@@ -66,88 +69,98 @@ const Login = () => {
     console.log(userData);
   }, [dispatch]);
   return (
-    <div className='p-3 md:p-4 shadow drop-shadow-md'>
-      <div className='w-full max-w-sm bg-white m-auto flex items-center flex-col p-4'>
-        <div className='w-20 overflow-hidden rounded-full drop-shadow-md shadow-md'>
-          <img src={signuplogo} alt='' className='w-full' />
-        </div>
-        {formMsg && (
-          <p className='bg-red-400 italic text-white text-base mt-8 mb-5 p-1 rounded-md'>
-            {formMsg}
+    <>
+      {isLoggingIn && (
+        <div className='text-center justify-center mx-auto max-w-md flex flex-row items-center bg-gray-100 my-10 rounded-full px-12 py-2'>
+          <RingLoader size={40} color='lightblue' />
+          <p className='text-xxl font-medium text-gray-500 pl-3 '>
+            Logging you in, please wait a moment.
           </p>
-        )}
+        </div>
+      )}
+      <div className='p-3 md:p-4 shadow drop-shadow-md'>
+        <div className='w-full max-w-sm bg-white m-auto flex items-center flex-col p-4'>
+          <div className='w-20 overflow-hidden rounded-full drop-shadow-md shadow-md'>
+            <img src={signuplogo} alt='' className='w-full' />
+          </div>
+          {formMsg && (
+            <p className='bg-red-400 italic text-white text-base mt-8 mb-5 p-1 rounded-md'>
+              {formMsg}
+            </p>
+          )}
 
-        <form
-          action=''
-          className='w-full py-3 flex flex-col'
-          onSubmit={handleSubmit}
-        >
-          <label htmlFor='email' className='text-sm'>
-            Email
-          </label>
-          <input
-            type='text'
-            id='email'
-            name='email'
-            className='w-full bg-slate-100 p-1 mt-1 mb-3 rounded-md pl-3 pb-2 focus-within:outline-blue-200'
-            value={data.email}
-            onChange={(e) => {
-              setData({ ...data, email: e.target.value });
-            }}
-          />
-
-          <label htmlFor='password' className='text-sm '>
-            Pasword
-          </label>
-          <div
-            className={
-              showFocus
-                ? 'bg-slate-100 flex mt-1 p-1 rounded-md border-blue-300 focus-within:outline focus-within:outline-blue-200 mb-3'
-                : 'bg-slate-100 flex mt-1 p-1 rounded-md focus-within:outline focus-within:outline-blue-200 mb-3'
-            }
+          <form
+            action=''
+            className='w-full py-3 flex flex-col'
+            onSubmit={handleSubmit}
           >
+            <label htmlFor='email' className='text-sm'>
+              Email
+            </label>
             <input
-              type={showPassword ? 'text' : 'password'}
-              id='password'
-              name='password'
-              onClick={() => {
-                setShowFocus(true);
-              }}
-              // hidden={showPassword ? true : false}
-              className=' w-full bg-slate-100 p-0.5 rounded-md pl-3  outline-none'
-              value={data.password}
+              type='text'
+              id='email'
+              name='email'
+              className='w-full bg-slate-100 p-1 mt-1 mb-3 rounded-md pl-3 pb-2 focus-within:outline-blue-200'
+              value={data.email}
               onChange={(e) => {
-                setData({ ...data, password: e.target.value });
+                setData({ ...data, email: e.target.value });
               }}
             />
-            <span
-              onClick={() => setShowPassword((prev) => !prev)}
-              className='mt-1 text-xl'
+
+            <label htmlFor='password' className='text-sm '>
+              Pasword
+            </label>
+            <div
+              className={
+                showFocus
+                  ? 'bg-slate-100 flex mt-1 p-1 rounded-md border-blue-300 focus-within:outline focus-within:outline-blue-200 mb-3'
+                  : 'bg-slate-100 flex mt-1 p-1 rounded-md focus-within:outline focus-within:outline-blue-200 mb-3'
+              }
             >
-              {showPassword ? <BiHide /> : <BiSolidShow />}
-            </span>
-          </div>
+              <input
+                type={showPassword ? 'text' : 'password'}
+                id='password'
+                name='password'
+                onClick={() => {
+                  setShowFocus(true);
+                }}
+                // hidden={showPassword ? true : false}
+                className=' w-full bg-slate-100 p-0.5 rounded-md pl-3  outline-none'
+                value={data.password}
+                onChange={(e) => {
+                  setData({ ...data, password: e.target.value });
+                }}
+              />
+              <span
+                onClick={() => setShowPassword((prev) => !prev)}
+                className='mt-1 text-xl'
+              >
+                {showPassword ? <BiHide /> : <BiSolidShow />}
+              </span>
+            </div>
 
-          <button
-            type='submit'
-            className=' w-full max-w-[120px] m-auto bg-blue-200 mt-3 hover:bg-blue-600 hover:text-white hover:transition-all cursor-pointer rounded-full p-2'
-          >
-            Login
-          </button>
-        </form>
+            <button
+              type='submit'
+              className=' w-full max-w-[120px] m-auto bg-blue-200 mt-3 hover:bg-blue-600 hover:text-white hover:transition-all cursor-pointer rounded-full p-2'
+            >
+              Login
+            </button>
+          </form>
 
-        <p className='mt-3'>
-          Don't have account ? click{' '}
-          <Link
-            to={'/signup'}
-            className='text-blue-300 active:text-red-500 hover:text-red-500'
-          >
-            here
-          </Link>{' '}
-          to signup
-        </p>
+          <p className='mt-3'>
+            Don't have account ? click{' '}
+            <Link
+              to={'/signup'}
+              className='text-blue-300 active:text-red-500 hover:text-red-500'
+            >
+              here
+            </Link>{' '}
+            to signup
+          </p>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

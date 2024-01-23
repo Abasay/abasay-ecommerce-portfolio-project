@@ -10,8 +10,8 @@ const HomeCard = ({
 }) => {
   if (isLoading) {
     return (
-      <div className='flex justify-center items-center h-full'>
-        <p>Loading...</p>
+      <div className='flex justify-center items-center h-40 bg-blue-50'>
+        <p className=' font-mono text-gray-500'>Loading...</p>
       </div>
     );
   }

@@ -8,6 +8,7 @@ import { logOutRedux } from '../redux/userSlice';
 import { toastFunction } from '../utility/toastFunction';
 import { useNavigate } from 'react-router-dom';
 import { addCartItem, setProducts } from '../redux/productSlice';
+import { changeHeaderRedux } from '../redux/headerSlice';
 
 const Header = () => {
   const productCartItem = useSelector((state) => state.products.cartItem);
@@ -15,12 +16,15 @@ const Header = () => {
   const [showDropdown, setShowDropdown] = useState(false);
   const userData = useSelector((state) => state.user);
   const [cartQuantity, setCartQuantity] = useState(0);
+  const url = window.location.href.split('/');
+  console.log(url);
 
   const navigate = useNavigate();
 
   // console.log(userData);
   // console.log(process.env.REACT_APP_ADMIN_EMAIL);
   const [data, setData] = useState(userData);
+  const [activeHeader, setActiveHeader] = useState(url[3]);
 
   const dispatch = useDispatch();
   const handleLogOut = () => {
@@ -38,6 +42,10 @@ const Header = () => {
   useEffect(() => {
     setCartQuantity(productCartItem.length);
   }, [productCartItem]);
+
+  useEffect(() => {
+    setActiveHeader(activeHeader);
+  }, [url]);
   return (
     <header className='fixed shadow-md w-full h-20 px-2 md:px-4 z-50 bg-white'>
       {/* desktop */}
@@ -52,25 +60,45 @@ const Header = () => {
           <nav className='flex gap-4 md:gap-6 text-base md:text-lg'>
             <Link
               to={'/'}
-              className='hover:bg-blue-300 hover:text-white p-1 transition-all rounded-lg'
+              className={`${
+                activeHeader === 'home'
+                  ? 'hover:bg-blue-300 hover:text-white p-1 transition-all rounded-lg text-blue-400'
+                  : 'hover:bg-blue-300 hover:text-white p-1 transition-all rounded-lg'
+              }`}
+              onClick={() => setActiveHeader('home')}
             >
               Home
             </Link>
-            {/* <Link
-              to={'cart'}
-              className='hover:bg-blue-300 hover:text-white p-1 transition-all rounded-lg'
+            <Link
+              to={'catalog'}
+              className={`${
+                activeHeader === 'catalog'
+                  ? 'hover:bg-blue-300 hover:text-white p-1 transition-all rounded-lg  text-blue-400'
+                  : 'hover:bg-blue-300 hover:text-white p-1 transition-all rounded-lg'
+              }`}
+              onClick={() => setActiveHeader('catalog')}
             >
-              Cart
-            </Link> */}
+              Catalog
+            </Link>
             <Link
               to={'about'}
-              className='hover:bg-blue-300 hover:text-white p-1 transition-all rounded-lg'
+              className={`${
+                activeHeader === 'about'
+                  ? 'hover:bg-blue-300 hover:text-white p-1 transition-all rounded-lg  text-blue-400'
+                  : 'hover:bg-blue-300 hover:text-white p-1 transition-all rounded-lg'
+              }`}
+              onClick={() => setActiveHeader('about')}
             >
               About
             </Link>
             <Link
               to={'contact'}
-              className='hover:bg-blue-300 hover:text-white p-1 transition-all rounded-lg'
+              className={`${
+                activeHeader === 'contact'
+                  ? 'hover:bg-blue-300 hover:text-white p-1 transition-all rounded-lg text-blue-400'
+                  : 'hover:bg-blue-300 hover:text-white p-1 transition-all rounded-lg'
+              }`}
+              onClick={() => setActiveHeader('contact')}
             >
               Contact
             </Link>

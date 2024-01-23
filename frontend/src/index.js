@@ -20,6 +20,7 @@ import { Provider } from 'react-redux';
 import { store } from './redux/index';
 import Cart from './pages/Cart';
 import ErrorBoundary from './components/404';
+import Catalog from './pages/Catalog';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -32,6 +33,8 @@ const router = createBrowserRouter(
       <Route path='login' element={<Login />} />
       <Route path='newproduct' element={<NewProduct />} />
       <Route path='signup' element={<SignUp />} />
+      <Route path='catalog' element={<Catalog />} />
+
       <Route path='*' element={<ErrorBoundary />} />
     </Route>
   )
