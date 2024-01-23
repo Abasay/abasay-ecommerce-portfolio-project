@@ -31,7 +31,7 @@ const Header = () => {
     setShowDropdown(false);
     localStorage.removeItem('user_email');
     dispatch(logOutRedux());
-    dispatch(setProducts([]));
+    // dispatch(setProducts([]));
     dispatch(addCartItem([]));
     navigate('/');
     toastFunction('success', 'Successfully logged out');

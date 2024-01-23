@@ -19,6 +19,7 @@ const AllProducts = () => {
   const productData = useSelector((state) => state.products.productList);
   const [searchWord, setSearchWord] = useState('');
   const [search, setSearch] = useState(false);
+  const [searchRes, setSearchRes] = useState(true);
 
   const [productByCategory, setProductByCategory] = useState([...productData]);
 
@@ -47,7 +48,11 @@ const AllProducts = () => {
       })
       .filter((prod) => prod !== null);
     // setSearched(true)
-
+    if (searchResult?.length > 0) {
+      setSearchRes(true);
+    } else {
+      setSearchRes(false);
+    }
     setProductByCategory([...searchResult]);
     console.log(searchResult);
   };
@@ -77,6 +82,7 @@ const AllProducts = () => {
                   onClick={() => {
                     setSearch(false);
                     setSearchWord('');
+                    setSearchRes(true);
                     filterProductByCategory('all');
                   }}
                 >
@@ -144,7 +150,7 @@ const AllProducts = () => {
           })
         ) : (
           <div className='font-medium text-gray-500 text-2xl my-20 '>
-            Loading...
+            {!searchRes ? 'No result' : 'Loading... '}
           </div>
         )}
       </div>

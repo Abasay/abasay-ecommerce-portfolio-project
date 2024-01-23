@@ -19,7 +19,7 @@ const mailHandler = async (recepientMail, message, user) => {
     <tr>
       <td style="padding: 20px; text-align: center;">
         <h1 style="margin: 0;">Abasay-Today</h1>
-        <p style="font-size: 18px; margin: 10px 0;">Welcome to our platform!</p>
+        <p style="font-size: 18px; margin: 10px 0;">Thanks for contacting us!</p>
       </td>
     </tr>
   </table>
