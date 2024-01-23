@@ -18,7 +18,7 @@ const About = () => {
           </div>
           <div className='pl-32 font-medium my-8 italic text-xl text-gray-400'>
             <p className='text-justify'>
-              Hello, I'm Asheem <br /> I'm a Full Stack Software Engineer with
+              Hello, I'm Asheem. <br /> I'm a Full Stack Software Engineer with
               vast experience in{' '}
               <span className='font-semibold'>
                 {' '}
