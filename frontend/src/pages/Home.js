@@ -7,13 +7,11 @@ import AllProducts from '../components/AllProducts';
 
 const Home = () => {
   const productData = useSelector((state) => state.products.productList);
-  console.log(productData);
   const homeProductList = productData.slice(0, 4);
 
   const homeProductVegetableList = productData.filter(
     (prod) => prod.category === 'vegetable'
   );
-  console.log(homeProductVegetableList);
   const dummyArray = new Array(4).fill(null);
   const dummyArray1 = new Array(10).fill(null);
 

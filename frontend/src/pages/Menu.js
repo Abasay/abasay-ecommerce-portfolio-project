@@ -74,7 +74,7 @@ const Menu = () => {
           </div>
           <div>
             <p className='text-slate-600 font-medium'>Description : </p>
-            <p>{productDisplay.description}</p>
+            <p className='text-justify'>{productDisplay.description}</p>
           </div>
         </div>
       </div>

@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logOutRedux } from '../redux/userSlice';
 import { toastFunction } from '../utility/toastFunction';
 import { useNavigate } from 'react-router-dom';
+import { addCartItem, setProducts } from '../redux/productSlice';
 
 const Header = () => {
   const productCartItem = useSelector((state) => state.products.cartItem);
@@ -17,14 +18,17 @@ const Header = () => {
 
   const navigate = useNavigate();
 
-  console.log(userData);
-  console.log(process.env.REACT_APP_ADMIN_EMAIL);
+  // console.log(userData);
+  // console.log(process.env.REACT_APP_ADMIN_EMAIL);
   const [data, setData] = useState(userData);
 
   const dispatch = useDispatch();
   const handleLogOut = () => {
     setShowDropdown(false);
+    localStorage.removeItem('user_email');
     dispatch(logOutRedux());
+    dispatch(setProducts([]));
+    dispatch(addCartItem([]));
     navigate('/');
     toastFunction('success', 'Successfully logged out');
   };

@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { toastFunction } from '../utility/toastFunction';
 import { useSelector } from 'react-redux';
+import { uploadToCart } from '../utility/uploadProductToCart';
 
 const CardFeature = ({
   name,
@@ -34,17 +35,30 @@ const CardFeature = ({
   };
   const dispatch = useDispatch();
 
-  const handleAddCartProduct = (e) => {
+  const handleAddCartProduct = async (e) => {
     if (userData.email && userData.imgUrl) {
-      dispatch(
-        addCartItem({
-          _id: prod_id,
-          name: name,
-          price: price,
-          category: category,
-          image: productImg,
-        })
+      const upload = await uploadToCart(
+        userData.email,
+        name,
+        category,
+        productImg,
+        price,
+        description,
+        prod_id
       );
+      if (upload.success) {
+        dispatch(
+          addCartItem({
+            _id: prod_id,
+            name: name,
+            price: price,
+            category: category,
+            image: productImg,
+          })
+        );
+      } else {
+        toastFunction('error', 'Failed to add item to cart');
+      }
     } else {
       toastFunction('error', 'Please log in to add items to your cart!!!');
     }

@@ -11,21 +11,35 @@ const productSlice = createSlice({
   initialState,
   reducers: {
     setProducts: (state, action) => {
-      console.log(action.payload);
       state.productList = [...action.payload.products];
       return state;
     },
+    initialCart: (state, action) => {
+      console.log(action);
+      state.cartItem = [...action.payload];
+      return state;
+    },
     addCartItem: (state, action) => {
-      const check = state.cartItem.some((el) => el._id === action.payload._id);
-      if (check) {
-        toastFunction('error', 'Item  already in Cart');
+      if (action.payload?.length > 0) {
+        const cartItem = action.payload.map((item) => {
+          return { ...item, qty: 1, total: item.price };
+        });
+
+        state.cartItem = [...cartItem];
       } else {
-        toastFunction('success', 'Item added successfully');
-        const total = action.payload.price;
-        state.cartItem = [
-          ...state.cartItem,
-          { ...action.payload, qty: 1, total: total },
-        ];
+        const check = state.cartItem.some(
+          (el) => el._id === action.payload._id
+        );
+        if (check) {
+          toastFunction('error', 'Item  already in Cart');
+        } else {
+          toastFunction('success', 'Item added successfully');
+          const total = action.payload.price;
+          state.cartItem = [
+            ...state.cartItem,
+            { ...action.payload, qty: 1, total: total },
+          ];
+        }
       }
     },
     deleteCartItem: (state, action) => {
@@ -67,6 +81,7 @@ export const {
   increaseQty,
   decreaseQty,
   deleteCartItem,
+  initialCart,
 } = productSlice.actions;
 
 export default productSlice.reducer;

@@ -21,9 +21,6 @@ const Login = () => {
 
   const userData = useSelector((state) => state);
 
-  console.log(data);
-  console.log(userData);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { email, password } = data;
@@ -43,8 +40,6 @@ const Login = () => {
 
         const loginFetchRes = await fetchLoginData.json();
 
-        console.log(loginFetchRes);
-
         if (
           loginFetchRes.alert &&
           loginFetchRes.userData.password === data.password
@@ -56,19 +51,17 @@ const Login = () => {
         } else {
           toastFunction('error', 'Invalid Login Credentials');
         }
-        console.log(userData);
       } else {
         setFormMsg('Please enter a valid email and password credential');
         setTimeout(() => {
           setFormMsg('');
         }, 5000);
       }
-      console.log(userData);
     } catch (error) {
       console.log(error);
     }
   };
-  console.log(userData);
+
   useEffect(() => {
     console.log(userData);
   }, [dispatch]);

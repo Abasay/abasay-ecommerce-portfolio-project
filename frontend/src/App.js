@@ -5,12 +5,16 @@ import { Outlet } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { setProducts } from './redux/productSlice';
+import { addCartItem, initialCart, setProducts } from './redux/productSlice';
+import Footer from './components/Footer';
+import ErrorBoundary from './components/404';
 
 function App() {
   const dispatch = useDispatch();
   const productsData = useSelector((state) => state.products);
-  console.log(productsData);
+  const userData = useSelector((state) => state.user);
+
+  const email = localStorage.getItem('user_email');
 
   useEffect(() => {
     (async () => {
@@ -19,15 +23,37 @@ function App() {
           `${process.env.REACT_APP_SERVER_URL}/products`
         );
         const prodResponse = await productRequest.json();
-        console.log(prodResponse);
 
         dispatch(setProducts(prodResponse));
-        console.log(productsData);
       } catch (error) {
         console.log(error);
       }
     })();
   }, []);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const requestCart = await fetch(
+          `${process.env.REACT_APP_SERVER_URL}/get-cart`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email }),
+          }
+        );
+        const cartResponse = await requestCart.json();
+        if (cartResponse.success) {
+          dispatch(addCartItem(cartResponse.data));
+        }
+        console.log(cartResponse);
+      } catch (error) {
+        console.log(error);
+      }
+    })();
+  }, [email]);
 
   return (
     <div className='relative'>
@@ -47,6 +73,7 @@ function App() {
       <main className='pt-20 bg-slate-50 min-h-[calc(100vh)]'>
         <Outlet />
       </main>
+      <Footer />
     </div>
   );
 }

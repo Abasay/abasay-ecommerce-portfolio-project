@@ -73,13 +73,13 @@ const Cart = () => {
               {productCartItem.map((el) => {
                 return (
                   <CartProduct
-                    key={el._id}
-                    id={el._id}
+                    key={el._id ? el._id : el.prod_id}
+                    id={el._id ? el._id : el.prod_id}
                     name={el.name}
-                    image={el.image}
+                    image={el.image ? el.image : el.productImg}
                     category={el.category}
-                    qty={el.qty}
-                    total={el.total}
+                    qty={el.qty ? el.qty : 1}
+                    total={el.total ? el.total : el.price}
                     price={el.price}
                   />
                 );

@@ -18,7 +18,6 @@ const AllProducts = () => {
   const productData = useSelector((state) => state.products.productList);
 
   const [productByCategory, setProductByCategory] = useState([...productData]);
-  console.log(productData);
   const filterProductByCategory = (category) => {
     const productCategory = productData.filter((product) =>
       category === 'all' ? productData : product.category === category

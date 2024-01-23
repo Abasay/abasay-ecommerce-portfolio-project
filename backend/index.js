@@ -6,6 +6,9 @@ const { v2: cloudinary } = require('cloudinary');
 const { v4: uuidv4 } = require('uuid');
 const userModel = require('./models/userModel');
 const productModel = require('./models/productModel');
+const Cart = require('./models/cartModel');
+const nodemailer = require('nodemailer');
+const mailHandler = require('./handlers/mailHandler');
 
 const app = express();
 app.use(cors());
@@ -133,4 +136,97 @@ app.get('/products', async (req, res) => {
   console.log(allProducts);
   res.send({ products: allProducts });
 });
+
+//User Cart API
+app.post('/get-cart', async (req, res) => {
+  const { email } = req.body;
+  console.log(email);
+  try {
+    const user = await userModel.findOne({
+      email: email,
+    });
+
+    const cart = await Cart.findOne({
+      user_cart_id: user._id,
+    });
+
+    if (cart) {
+      return res.status(200).json({ success: true, data: cart.cart });
+    }
+    return res.status(404).json({
+      success: false,
+      data: 'You have no item in your cart, please add item.',
+    });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.post('/upload-to-cart', async (req, res) => {
+  const { email, name, category, productImg, price, description, prod_id } =
+    req.body;
+  let cart;
+  try {
+    const user = await userModel.findOne({
+      email: email,
+    });
+
+    const userCartExist = await Cart.findOne({
+      user_cart_id: user._id,
+    });
+
+    if (userCartExist) {
+      cart = userCartExist;
+      await cart.updateOne({
+        $push: {
+          cart: { name, category, productImg, price, description, prod_id },
+        },
+      });
+    } else {
+      cart = await Cart.create({
+        user_cart_id: user.id,
+        cart: [
+          {
+            name,
+            category,
+            productImg,
+            price,
+            description,
+          },
+        ],
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: 'product successfully added to the cart',
+    });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ success: false, message: 'Failed to add product to cart.' });
+  }
+
+  await cart;
+});
+
+//Send Mail
+app.post('/contact-us', async (req, res) => {
+  const { email, phoneNumber, name, message } = req.body;
+  try {
+    const sendMessage = await mailHandler(email, message, name);
+
+    if (sendMessage.response) {
+      return res
+        .status(200)
+        .json({ success: true, message: 'message sent successfully' });
+    }
+    return res
+      .status(500)
+      .json({ success: false, message: 'Failed to send message.' });
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
