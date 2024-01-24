@@ -26,12 +26,29 @@ const Home = () => {
   const dummyArray1 = new Array(10).fill(null);
 
   const slideRef = useRef();
+  const slideRefFruit = useRef();
+  const slideRefIce = useRef();
   const slideToLeft = () => {
     slideRef.current.scrollLeft += 200;
   };
   const slideToRight = () => {
     slideRef.current.scrollLeft -= 200;
   };
+
+  const slideFruitToLeft = () => {
+    slideRefFruit.current.scrollLeft += 200;
+  };
+  const slideFruitToRight = () => {
+    slideRefFruit.current.scrollLeft -= 200;
+  };
+
+  const slideIceToLeft = () => {
+    slideRefIce.current.scrollLeft += 200;
+  };
+  const slideIceToRight = () => {
+    slideRefIce.current.scrollLeft -= 200;
+  };
+
   return (
     <div className='p-2 md:p-4'>
       <div className='md:flex gap-4 py-2'>
@@ -44,8 +61,8 @@ const Home = () => {
             />
           </div>
           <h2 className='text-4xl md:text-7xl font-bold py-3'>
-            The Fasted Delivery in{' '}
-            <span className='text-blue-600 text-'>Your Home</span>
+            The Fastest Delivery in <br />
+            <span className='text-blue-600 text-'>Your HomeTown</span>
           </h2>
           <p className='py-3 text-base text-justify font-medium'>
             This is an ecommerce web app, designed to ease you the stress of
@@ -136,14 +153,14 @@ const Home = () => {
           <div className='mx-6'>
             <button
               className='bg-slate-300 hover:bg-slate-400 text-lg p-1 rounded'
-              onClick={slideToLeft}
+              onClick={slideFruitToLeft}
             >
               <BsArrowLeft />
             </button>
           </div>
           <div
             className=' flex gap-5 overflow-auto scrollbar-none scroll-smooth transition-all'
-            ref={slideRef}
+            ref={slideRefFruit}
           >
             {homeProductFruitList[0]
               ? homeProductFruitList.map((prod) => {
@@ -168,7 +185,7 @@ const Home = () => {
           <div className='mx-6'>
             <button
               className='bg-slate-300 hover:bg-slate-400 text-lg p-1 rounded'
-              onClick={slideToRight}
+              onClick={slideFruitToRight}
             >
               <BsArrowRight />
             </button>
@@ -181,14 +198,14 @@ const Home = () => {
           <div className='mx-6'>
             <button
               className='bg-slate-300 hover:bg-slate-400 text-lg p-1 rounded'
-              onClick={slideToLeft}
+              onClick={slideIceToLeft}
             >
               <BsArrowLeft />
             </button>
           </div>
           <div
             className=' flex gap-5 overflow-auto scrollbar-none scroll-smooth transition-all'
-            ref={slideRef}
+            ref={slideRefIce}
           >
             {homeProductIceCreamList[0]
               ? homeProductIceCreamList.map((prod) => {
@@ -216,7 +233,7 @@ const Home = () => {
           <div className='mx-6'>
             <button
               className='bg-slate-300 hover:bg-slate-400 text-lg p-1 rounded'
-              onClick={slideToRight}
+              onClick={slideIceToRight}
             >
               <BsArrowRight />
             </button>
