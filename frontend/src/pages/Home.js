@@ -61,7 +61,7 @@ const Home = () => {
             />
           </div>
           <h2 className='text-4xl md:text-7xl font-bold py-3'>
-            The Fastest Delivery in <br />
+            The Fastest <br /> Delivery in <br />
             <span className='text-blue-600 text-'>Your HomeTown</span>
           </h2>
           <p className='py-3 text-base text-justify font-medium'>

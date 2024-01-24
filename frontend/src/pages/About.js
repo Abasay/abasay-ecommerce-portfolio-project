@@ -37,7 +37,13 @@ const About = () => {
           </div>
         </div>
         <div className='my-32'>
-          <img src={profile} alt='' width={800} height={1000} />
+          <img
+            src={profile}
+            alt=''
+            className='rounded-full'
+            width={800}
+            height={800}
+          />
         </div>
       </section>
 
