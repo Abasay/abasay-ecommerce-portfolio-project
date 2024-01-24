@@ -47,7 +47,7 @@ const About = () => {
         </div>
       </section>
 
-      <div className='mt-8 w-full justify-center flex flex-row gap-6 mx-auto items-center'>
+      <div className='my-8 w-full justify-center flex flex-row gap-6 mx-auto items-center'>
         <div>
           <a
             href='https://www.github.com/Abasay'
