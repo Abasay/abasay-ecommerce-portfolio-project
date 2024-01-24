@@ -96,11 +96,12 @@ const Contact = () => {
           <div className='my-8'>
             <form
               action=''
-              className='flex flex-col gap-5'
+              className='flex flex-col gap-5 '
               onSubmit={handleSubmit}
             >
               <input
                 type='text'
+                code='text'
                 name='name'
                 placeholder='Name'
                 value={details.name}
@@ -111,6 +112,7 @@ const Contact = () => {
               <input
                 type='number'
                 name='phoneNumber'
+                code='number'
                 placeholder='Phone Number'
                 value={details.phoneNumber}
                 onChange={handleChange}
@@ -120,6 +122,7 @@ const Contact = () => {
               <input
                 type='email'
                 name='email'
+                code='email'
                 placeholder='Email address'
                 value={details.email}
                 onChange={handleChange}
@@ -129,6 +132,7 @@ const Contact = () => {
               <textarea
                 type='text'
                 rows={4}
+                code='message'
                 name='message'
                 value={details.message}
                 onChange={handleChange}

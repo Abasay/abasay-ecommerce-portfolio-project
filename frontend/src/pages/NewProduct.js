@@ -85,107 +85,113 @@ const NewProduct = () => {
   //   setProductData((prev) => prev);
   // }, []);
   return (
-    <div className='mt-5'>
-      <form
-        action=''
-        onSubmit={handleSubmit}
-        className=' p-4 m-auto w-full max-w-md shadow drop-shadow-lg flex flex-col h-full rounded-md'
-      >
-        <label htmlFor='name' className=''>
-          Name:{' '}
-        </label>
-        <input
-          type='text'
-          name='name'
-          value={productData.name}
-          className='w-full bg-slate-100 p-1 mt-1 mb-3 rounded-md pl-3 pb-2 focus-within:outline-blue-200'
-          onChange={inputOnChange}
-        />
-
-        <label htmlFor='category'>Category:</label>
-        <select
-          name='category'
-          id='category'
-          value={productData.category}
-          onChange={inputOnChange}
-          className='w-full bg-slate-100 p-1 mt-1 mb-3 rounded-md pl-3 pb-2 focus-within:outline-blue-200'
+    <>
+      <div className='my-6 max-w-md mx-auto text-center flex items-center flex-col'>
+        <h1 className='text-4xl text-slate-500 italic my-2'>ADMIN PANEL</h1>
+        <div className=' border w-12 border-4 rounded-full border-blue-400'></div>
+      </div>
+      <div className='mt-5'>
+        <form
+          action=''
+          onSubmit={handleSubmit}
+          className=' p-4 m-auto w-full max-w-md shadow drop-shadow-lg flex flex-col h-full rounded-md'
         >
-          <option value='none' className='hover:text-blue-200'>
-            select a category
-          </option>
-          <option value='fruit' className='hover:text-blue-200'>
-            Fruit
-          </option>
-          <option value='vegetable'>Vegetable</option>
-          <option value='pizza'>Pizza</option>
-          <option value='icecream'>IceCream</option>
-          <option value='cookies'>Cookies</option>
-
-          <option value='rice'>Rice</option>
-          <option value='cake'>Cake</option>
-          <option value='others' className='hover:text-blue-200'>
-            Others
-          </option>
-        </select>
-
-        <label htmlFor='productImg' className='mb-1 mt-2'>
-          <p className='mb-2'>Product Image: </p>
-          {productData.productImg ? (
-            <img
-              src={productData.productImg}
-              alt=''
-              className='w-full h-60 rounded-md '
-            />
-          ) : (
-            <div className='h-40 bg-slate-200 mt-1 flex justify-center items-center flex-col'>
-              <span className='text-xl'>
-                <BsCloudUpload size={40} />
-              </span>
-
-              <p className='text-xl'>Upload Image</p>
-            </div>
-          )}
-
+          <label htmlFor='name' className=''>
+            Name:{' '}
+          </label>
           <input
-            type='file'
-            name='productImg'
-            accept='image/*'
-            id='productImg'
-            className='hidden'
-            onChange={upLoadImage}
+            type='text'
+            name='name'
+            value={productData.name}
+            className='w-full bg-slate-100 p-1 mt-1 mb-3 rounded-md pl-3 pb-2 focus-within:outline-blue-200'
+            onChange={inputOnChange}
           />
-        </label>
 
-        <label htmlFor='price' className='mt-3'>
-          Price:{' '}
-        </label>
-        <input
-          type='text'
-          name='price'
-          id='price'
-          value={productData.price}
-          onChange={inputOnChange}
-          className='w-full bg-slate-100 p-1 mt-1 mb-3 rounded-md pl-3 pb-2 focus-within:outline-blue-200'
-        />
-        <label htmlFor='description'>Description:</label>
-        <textarea
-          name='description'
-          id=''
-          cols='3'
-          rows='6'
-          value={productData.description}
-          onChange={inputOnChange}
-          className='w-full bg-slate-100 p-1 mt-1 mb-3 rounded-md pl-3 pb-2 focus-within:outline-blue-200'
-        ></textarea>
+          <label htmlFor='category'>Category:</label>
+          <select
+            name='category'
+            id='category'
+            value={productData.category}
+            onChange={inputOnChange}
+            className='w-full bg-slate-100 p-1 mt-1 mb-3 rounded-md pl-3 pb-2 focus-within:outline-blue-200'
+          >
+            <option value='none' className='hover:text-blue-200'>
+              select a category
+            </option>
+            <option value='fruit' className='hover:text-blue-200'>
+              Fruit
+            </option>
+            <option value='vegetable'>Vegetable</option>
+            <option value='pizza'>Pizza</option>
+            <option value='icecream'>IceCream</option>
+            <option value='cookies'>Cookies</option>
 
-        <button
-          type='submit'
-          className='w-full  m-auto bg-blue-200 mt-3 mb-4 hover:bg-blue-600 hover:text-white hover:transition-all cursor-pointer rounded-full p-2'
-        >
-          Save
-        </button>
-      </form>
-    </div>
+            <option value='rice'>Rice</option>
+            <option value='cake'>Cake</option>
+            <option value='others' className='hover:text-blue-200'>
+              Others
+            </option>
+          </select>
+
+          <label htmlFor='productImg' className='mb-1 mt-2'>
+            <p className='mb-2'>Product Image: </p>
+            {productData.productImg ? (
+              <img
+                src={productData.productImg}
+                alt=''
+                className='w-full h-60 rounded-md '
+              />
+            ) : (
+              <div className='h-40 bg-slate-200 mt-1 flex justify-center items-center flex-col'>
+                <span className='text-xl'>
+                  <BsCloudUpload size={40} />
+                </span>
+
+                <p className='text-xl'>Upload Image</p>
+              </div>
+            )}
+
+            <input
+              type='file'
+              name='productImg'
+              accept='image/*'
+              id='productImg'
+              className='hidden'
+              onChange={upLoadImage}
+            />
+          </label>
+
+          <label htmlFor='price' className='mt-3'>
+            Price:{' '}
+          </label>
+          <input
+            type='text'
+            name='price'
+            id='price'
+            value={productData.price}
+            onChange={inputOnChange}
+            className='w-full bg-slate-100 p-1 mt-1 mb-3 rounded-md pl-3 pb-2 focus-within:outline-blue-200'
+          />
+          <label htmlFor='description'>Description:</label>
+          <textarea
+            name='description'
+            id=''
+            cols='3'
+            rows='6'
+            value={productData.description}
+            onChange={inputOnChange}
+            className='w-full bg-slate-100 p-1 mt-1 mb-3 rounded-md pl-3 pb-2 focus-within:outline-blue-200'
+          ></textarea>
+
+          <button
+            type='submit'
+            className='w-full  m-auto bg-blue-200 mt-3 mb-4 hover:bg-blue-600 hover:text-white hover:transition-all cursor-pointer rounded-full p-2'
+          >
+            Save
+          </button>
+        </form>
+      </div>
+    </>
   );
 };
 

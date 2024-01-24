@@ -43,10 +43,10 @@ input[type='submit']:disabled {
   @apply bg-blue-50 text-blue-400 border cursor-not-allowed border-blue-300;
 }
 
-input[type='text']:focus,
-input[type='email']:focus,
-input[type='number']:focus,
-textarea:focus {
+input[code='text']:focus,
+input[code='email']:focus,
+input[code='number']:focus,
+textarea[code='message']:focus {
   @apply bg-green-100 text-blue-400;
 }
 section.contact {
