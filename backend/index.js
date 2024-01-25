@@ -38,14 +38,14 @@ cloudinary.config({
 
 //SignUp API
 app.post('/signup', async (req, res) => {
-  console.log(req.body);
+  //console.log(req.body);
   const { email, firstName, lastName } = req.body;
 
   try {
     const userSearch = await userModel.findOne({ email: email });
+    console.log(userSearch);
 
     if (userSearch) {
-      console.log(userSearch);
       return res.send({ message: 'Email already in use', alert: false });
     } else {
       const userCloudinaryImg = await cloudinary.uploader.upload(
@@ -57,11 +57,12 @@ app.post('/signup', async (req, res) => {
       const signUpMail = await signupMailHandler(email, firstName, lastName);
       if (signUpMail.response) {
         return res.send({ message: 'Successfully signed up', alert: true });
+      } else {
+        return res.send({
+          message: 'Error Signing up, please try again',
+          alert: false,
+        });
       }
-      return res.send({
-        message: 'Error Signing up, please try again',
-        alert: false,
-      });
     }
   } catch (error) {
     res.send({ message: 'Failed to signup' });
