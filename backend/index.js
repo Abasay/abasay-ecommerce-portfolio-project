@@ -40,6 +40,7 @@ cloudinary.config({
 app.post('/signup', async (req, res) => {
   //console.log(req.body);
   const { email, firstName, lastName } = req.body;
+  let userCloudinaryImg;
 
   try {
     const userSearch = await userModel.findOne({ email: email });
@@ -48,11 +49,17 @@ app.post('/signup', async (req, res) => {
     if (userSearch) {
       return res.send({ message: 'Email already in use', alert: false });
     } else {
-      const userCloudinaryImg = await cloudinary.uploader.upload(
-        req.body.imgUrl,
-        { public_id: 'user' + uuidv4() }
-      );
-      const data = userModel({ ...req.body, imgUrl: userCloudinaryImg.url });
+      if (req.body?.imgUrl) {
+        userCloudinaryImg = await cloudinary.uploader.upload(req.body.imgUrl, {
+          public_id: 'user' + uuidv4(),
+        });
+      } else {
+        userCloudinaryImg = {
+          url: 'https://images-na.ssl-images-amazon.com/images/I/51e6kpkyuIL._AC_SX466_.jpg',
+        };
+      }
+
+      const data = userModel({ ...req.body, imgUrl: userCloudinaryImg?.url });
       const save = data.save();
       const signUpMail = await signupMailHandler(email, firstName, lastName);
       if (signUpMail.response) {
@@ -65,6 +72,7 @@ app.post('/signup', async (req, res) => {
       }
     }
   } catch (error) {
+    console.log(error);
     res.send({ message: 'Failed to signup' });
   }
 });

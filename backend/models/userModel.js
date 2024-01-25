@@ -5,7 +5,7 @@ const userSchema = mongoose.Schema({
   email: { type: String, unique: true },
   password: String,
   confirmPassword: String,
-  imgUrl: String,
+  imgUrl: { type: String, default: null },
 });
 
 const userModel = mongoose.model('user', userSchema);

@@ -141,6 +141,18 @@ const Header = () => {
                     </p>
                   </Link>
                 )}
+                {userData.imgUrl && (
+                  <Link
+                    to={'/profile'}
+                    onClick={() => {
+                      setShowDropdown((prev) => !prev);
+                    }}
+                  >
+                    <p className='whitespace-nowrap  p-1 hover:bg-blue-300 hover:text-white w-full mb-1 rounded-md'>
+                      Profile
+                    </p>
+                  </Link>
+                )}
 
                 <Link
                   to={userData.imgUrl ? '' : '/login'}

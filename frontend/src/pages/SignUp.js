@@ -35,35 +35,42 @@ const SignUp = () => {
 
     if (firstName && lastName && email && password && confirmPassword) {
       if (password === confirmPassword) {
-        try {
-          setIsRegistering(true);
-          const submitData = await fetch(
-            `${process.env.REACT_APP_SERVER_URL}/signup`,
-            {
-              method: 'POST',
-              headers: {
-                'content-type': 'application/json',
-              },
-              body: JSON.stringify(data),
-            }
-          );
-
-          const fetchRes = await submitData.json();
-          console.log(fetchRes);
-          if (!fetchRes.alert) {
-            setIsRegistering(false);
-            toastFunction(
-              'error',
-              'Email already in use, please enter a valid email!!'
+        if (password.length > 6) {
+          try {
+            setIsRegistering(true);
+            const submitData = await fetch(
+              `${process.env.REACT_APP_SERVER_URL}/signup`,
+              {
+                method: 'POST',
+                headers: {
+                  'content-type': 'application/json',
+                },
+                body: JSON.stringify(data),
+              }
             );
-          } else {
-            setIsRegistering(false);
-            toastFunction('success', fetchRes.message);
-            localStorage.setItem('user_email', email);
-            navigate('/login');
+
+            const fetchRes = await submitData.json();
+            console.log(fetchRes);
+            if (!fetchRes.alert) {
+              setIsRegistering(false);
+              toastFunction(
+                'error',
+                'Email already in use, please enter a valid email!!'
+              );
+            } else {
+              setIsRegistering(false);
+              toastFunction('success', fetchRes.message);
+              localStorage.setItem('user_email', email);
+              navigate('/login');
+            }
+          } catch (error) {
+            console.log(Error(error.reason));
           }
-        } catch (error) {
-          console.log(Error(error.reason));
+        } else {
+          toastFunction(
+            'error',
+            'Oops, Password must at least be 6 lin length!!!'
+          );
         }
       } else {
         setFormMsg('Password and Confirm Password inputs are not same');

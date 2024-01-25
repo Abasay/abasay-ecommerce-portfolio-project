@@ -21,6 +21,7 @@ import { store } from './redux/index';
 import Cart from './pages/Cart';
 import ErrorBoundary from './components/404';
 import Catalog from './pages/Catalog';
+import Profile from './pages/Profile';
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -34,6 +35,7 @@ const router = createBrowserRouter(
       <Route path='newproduct' element={<NewProduct />} />
       <Route path='signup' element={<SignUp />} />
       <Route path='catalog' element={<Catalog />} />
+      <Route path='profile' element={<Profile />} />
 
       <Route path='*' element={<ErrorBoundary />} />
     </Route>
